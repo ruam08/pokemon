@@ -1,0 +1,38 @@
+object frmPrincipal: TfrmPrincipal
+  Left = 0
+  Top = 0
+  Caption = 'Pok'#233'dex'
+  ClientHeight = 514
+  ClientWidth = 314
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnShow = FormShow
+  DesignerMasterStyle = 0
+  object ListView1: TListView
+    ItemAppearanceClassName = 'TImageListItemAppearance'
+    ItemEditAppearanceClassName = 'TImageListItemDeleteAppearance'
+    HeaderAppearanceClassName = 'TListHeaderObjects'
+    FooterAppearanceClassName = 'TListHeaderObjects'
+    Align = Client
+    Size.Width = 314.000000000000000000
+    Size.Height = 514.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    ItemAppearance.ItemHeight = 100
+    ItemAppearance.ItemEditHeight = 80
+    ItemAppearanceObjects.ItemObjects.Text.Font.StyleExt = {00070000000000000004000000}
+    ItemAppearanceObjects.ItemObjects.Text.Width = 185.000000000000000000
+    ItemAppearanceObjects.ItemObjects.Text.Height = 73.000000000000000000
+    ItemAppearanceObjects.ItemObjects.Text.PlaceOffset.X = 94.000000000000000000
+    ItemAppearanceObjects.ItemObjects.Text.PlaceOffset.Y = 16.000000000000000000
+    ItemAppearanceObjects.ItemObjects.Accessory.Visible = False
+    ItemAppearanceObjects.ItemObjects.Image.Width = 74.000000000000000000
+    ItemAppearanceObjects.ItemObjects.Image.Height = 100.000000000000000000
+    ItemAppearanceObjects.ItemObjects.Image.PlaceOffset.X = 8.000000000000000000
+    object AniIndicator1: TAniIndicator
+      Align = Center
+      Enabled = True
+    end
+  end
+end
