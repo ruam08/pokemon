@@ -78,8 +78,6 @@ begin
 end;
 
 function TfrmPrincipal.GetUrlJsonArray(url: string): TJSONArray;
-var
-  HTTP: TIdHTTP;
 begin
   RESTClient1.BaseURL := url;
   RESTRequest1.Execute;
@@ -105,12 +103,8 @@ end;
 
 function TfrmPrincipal.DownloadIMG(url: string): TStream;
 var
-  HTTP: TIdHTTP;
   IMG: TMemoryStream;
 begin
-
-  HTTP := TIdHTTP.Create(nil);
-  try
     try
       IMG := TMemoryStream.Create;
       RESTClient1.BaseURL := url;
@@ -120,10 +114,6 @@ begin
     except
 
     end;
-  finally
-    FreeAndNil(HTTP);
-  end;
-
 end;
 
 end.
