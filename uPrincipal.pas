@@ -9,12 +9,17 @@ uses
   FMX.ListView.Types, FMX.ListView.Appearances, FMX.ListView.Adapters.Base,
   FMX.ListView, FMX.StdCtrls, System.json, IdIOHandler, IdIOHandlerSocket,
   IdIOHandlerStack, IdSSL, IdSSLOpenSSL, IdBaseComponent, IdComponent,
-  IdTCPConnection, IdTCPClient, IdHTTP, System.ImageList, FMX.ImgList;
+  IdSSLOpenSSLHeaders,
+  IdTCPConnection, IdTCPClient, IdHTTP, System.ImageList, FMX.ImgList,
+  IPPeerClient, REST.Client, Data.Bind.Components, Data.Bind.ObjectScope;
 
 type
   TfrmPrincipal = class(TForm)
     ListView1: TListView;
     AniIndicator1: TAniIndicator;
+    RESTClient1: TRESTClient;
+    RESTRequest1: TRESTRequest;
+    RESTResponse1: TRESTResponse;
     procedure FormShow(Sender: TObject);
   private
     { Private declarations }
@@ -76,14 +81,10 @@ function TfrmPrincipal.GetUrlJsonArray(url: string): TJSONArray;
 var
   HTTP: TIdHTTP;
 begin
-  HTTP := TIdHTTP.Create(nil);
-  try
-    HTTP.IOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(HTTP);
-    result := TJSONObject.ParseJSONValue(TEncoding.UTF8.GetBytes(HTTP.Get(url)),
-      0) as TJSONArray;
-  finally
-    FreeAndNil(HTTP);
-  end;
+  RESTClient1.BaseURL := url;
+  RESTRequest1.Execute;
+  result := TJSONObject.ParseJSONValue
+    (TEncoding.UTF8.GetBytes(RESTResponse1.Content), 0) as TJSONArray;
 end;
 
 procedure TfrmPrincipal.TratamentoListagem(Sender: TObject);
@@ -95,7 +96,10 @@ begin
   else
   begin
     AniIndicator1.Visible := false;
-    ShowMessage('Falha ao conultar a lista de Pokemons, erro:' + ((Sender as TThread).FatalException as Exception).Message);
+
+    ShowMessage('Falha ao conultar a lista de Pokemons, erro:' +
+      ((Sender as TThread).FatalException as Exception).Message + ' -- ' +
+      WhichFailedToLoad());
   end;
 end;
 
@@ -104,15 +108,14 @@ var
   HTTP: TIdHTTP;
   IMG: TMemoryStream;
 begin
+
   HTTP := TIdHTTP.Create(nil);
   try
     try
       IMG := TMemoryStream.Create;
-      HTTP.Request.UserAgent :=
-        'User-Agent:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.96 Safari/537.36';
-      HTTP.HandleRedirects := true;
-      HTTP.IOHandler := TIdSSLIOHandlerSocketOpenSSL.Create(HTTP);
-      HTTP.Get(url, IMG);
+      RESTClient1.BaseURL := url;
+      RESTRequest1.Execute;
+      IMG.Write(RESTResponse1.RawBytes,Length(RESTResponse1.RawBytes));
       result := IMG;
     except
 
@@ -120,6 +123,7 @@ begin
   finally
     FreeAndNil(HTTP);
   end;
+
 end;
 
 end.

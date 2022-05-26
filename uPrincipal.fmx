@@ -35,4 +35,22 @@ object frmPrincipal: TfrmPrincipal
       Enabled = True
     end
   end
+  object RESTClient1: TRESTClient
+    Params = <>
+    HandleRedirects = True
+    Left = 72
+    Top = 232
+  end
+  object RESTRequest1: TRESTRequest
+    Client = RESTClient1
+    Params = <>
+    Response = RESTResponse1
+    SynchronizedEvents = False
+    Left = 72
+    Top = 284
+  end
+  object RESTResponse1: TRESTResponse
+    Left = 72
+    Top = 336
+  end
 end
